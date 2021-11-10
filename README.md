@@ -1,94 +1,153 @@
-# Лайт-сборка Create React App
+**Читать на других языках: [Русский](README.md), [Українська](README.ua.md).**
 
-Базовая сборка Create React App + Prettier + Husky + ESLint + Modern Normalize + deploy gh-pages
+# Телефонная книга
 
-## Для установки сборки:
+Напиши приложение хранения контактов телефонной книги.
 
-1. Копируем этот репозиторий себе.
+## Шаг 1
 
-2. Открываем в VSCode и запускаем в консоли команду `npm ci` чтобы установить загрузчики и плагины из перечня
-   "package-lock.json".
+Приложение должно состоять из формы и списка контактов. На текущем шаге реализуй
+добавление имени контакта и отображение списка контактов. Приложение не должно
+сохранять контакты между разными сессиями (обновление страницы).
 
-3. Меняем под себя значения ключа в файле "package-lock.json":
-   `"name": "react-default"` на `"name": "имя_вашего_проекта"` или просто `"name": ""`
+Используй эту разметку инпута с встроенной валидацией для имени контакта.
 
-4. Меняем под себя значения ключей в файле "package.json":
-   1. `"name": "react-default"` на `"name": "имя_вашего_проекта"` или просто `"name": ""`;
-   2. В параметрах "repository" - `"url": "git+https://github.com/Eduard-Konovka/react-default.git"` на
-      `"url": "git+https://github.com/ваше_имя_на_ГитХабе/имя_вашего_проекта.git"`;
-   3. В параметрах "bugs" - `"url": "https://github.com/Eduard-Konovka/react-default.git/issues"` на
-      `"url": "https://github.com/ваше_имя_на_ГитХабе/имя_вашего_проекта.git/issues"`;
-   4. `"author": "Eduard Konovka <ed098ua@gmail.com>"` на `"author": "Ваше_имя <ваш_e-mail>"` или просто `"author": ""`;
-   5. `"homepage": "https://Eduard-Konovka.github.io/react-default"` на
-      `"homepage": "https://ваше_имя_на_ГитХабе.github.io/имя_вашего_проекта"`.
+```html
+<input
+  type="text"
+  name="name"
+  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+  title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+  required
+/>
+```
 
-## Команды скриптов в консоли bash:
+Состояние хранящееся в родительском компоненте `<App>` обязательно должно быть
+следующего вида, добавлять новые свойства нельзя.
 
-Вас интересуют первых два скрипта: `npm start` и `npm run deploy` :)
+```bash
+state = {
+  contacts: [],
+  name: ''
+}
+```
 
-### `npm start`
+Каждый контакт должен быть объектом со свойствами `name` и `id`. Для генерации
+идентификаторов используй любой подходящий пакет, например
+[uuid](https://www.npmjs.com/package/uuid#version-4). После завершения этого
+шага, приложение должно выглядеть примерно так.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![preview](./mockup/step-1.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Шаг 2
 
-### `npm run deploy`
+Расширь функционал приложения, позволив пользователям добавлять номера
+телефонов. Для этого добавь `<input type="tel">` в форму, и свойство для
+хранения его значения в состоянии.
 
-Deploy development files to GitHub.
+```bash
+state = {
+  contacts: [],
+  name: '',
+  number: ''
+}
+```
 
-### `npm test`
+Используй эту разметку инпута с встроенной валидацией для номера контакта.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```html
+<input
+  type="tel"
+  name="number"
+  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+  title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+  required
+/>
+```
 
-### `npm run build`
+После завершения этого шага, приложение должно выглядеть примерно так.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![preview](./mockup/step-2.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Шаг 3
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Добавь поле поиска, которое можно использовать для фильтрации списка контактов
+по имени.
 
-### `npm run eject`
+- Поле поиска это инпут без формы, значение которого записывается в состояние
+  (контролируемый элемент).
+- Логика фильтрации должна быть нечувствительна к регистру.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+state = {
+  contacts: [],
+  filter: '',
+  name: '',
+  number: ''
+}
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![preview](./mockup/step-3.gif)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Когда мы работаем над новым функционалом, бывает удобно жестко закодировать
+некоторые данные в состояние. Это избавит от необходимости вручную вводить
+данные в интерфейсе для тестирования работы нового функционала. Например можно
+использовать такое начальное состояние.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+state = {
+  contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ],
+  filter: '',
+  name: '',
+  number: ''
+}
+```
 
-## Learn More
+## Шаг 4
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Если твое приложение реализовано в одном компоненте `<App>`, выполни
+рефакторинг, выделив подходящие части в отдельные компоненты. В состоянии
+корневого компонента `<App>` останутся только свойства `contacts` и `filter`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+state = {
+  contacts: [],
+  filter: ''
+}
+```
 
-### Code Splitting
+Достаточно выделить четыре компонента: форма добавления контактов, список
+контактов, элемент списка контактов и фильтр поиска.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+После рефакторинга корневой компонент приложения будет выглядеть так.
 
-### Analyzing the Bundle Size
+```html
+<div>
+  <h1>Phonebook</h1>
+  <ContactForm ... />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  <h2>Contacts</h2>
+  <Filter ... />
+  <ContactList ... />
+</div>
+```
 
-### Making a Progressive Web App
+## Шаг 5
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Запрети пользователю возможность добавлять контакты, имена которых уже есть в
+телефонной книге. При попытке выполнить такое действие выведи `alert` с
+предупреждением.
 
-### Advanced Configuration
+![preview](./mockup/step-5.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Шаг 6
 
-### Deployment
+Расширь функционал приложения, позволив пользователю удалять ранее сохраненные
+контакты.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![preview](./mockup/step-6.gif)

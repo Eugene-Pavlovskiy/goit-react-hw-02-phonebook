@@ -1,0 +1,18 @@
+.filter {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+    /* padding: 10px; */
+  }
+  
+  .filter__title {
+    margin-bottom: 10px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: rgb(123, 124, 124);
+  }
+  
+  .filter__input {
+    padding: 2px 5px;
+    font-size: 16px;
+  }
